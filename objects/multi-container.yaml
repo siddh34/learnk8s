@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mywebservernginx
+spec:
+  containers:
+    - name: mywebservernginx1
+      image: nginx
+      # resources:
+      #   limits:
+      #     memory: "128Mi"
+      #     cpu: "250m"
+    - name: busybox1
+      image: busybox
+      command: ['sh', '-c', 'echo Hello kubernetes! && sleep 3600']
+      # resources:
+      #   limits:
+      #     memory: "128Mi"
+      #     cpu: "250m"

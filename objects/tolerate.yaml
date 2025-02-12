@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-example
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      tier: nginx
+  template:
+    metadata:
+      labels:
+        tier: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.17.3
+        resources: {}
+      tolerations:
+      - key: "key"
+        operator: "Exists"
+        effect: "NoSchedule"

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: external-pod
+  name: external-pod
+spec:
+  serviceAccountName: external
+  containers:
+  - image: nginx
+    name: external-pod
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
