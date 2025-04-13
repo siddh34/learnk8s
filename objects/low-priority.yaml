@@ -1,0 +1,27 @@
+# kubectl create priorityclass low-priority --value=100 --description="low priority"
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: low-priority-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: low-priority
+  template:
+    metadata:
+      labels:
+        app: low-priority
+    spec:
+      priorityClassName: low-priority
+      containers:
+      - name: busybox
+        image: nginx
+        resources:
+          requests:
+            memory: "50Mi"
+            cpu: "30m"
+          limits:
+            memory: "100Mi"
+            cpu: "100m"
