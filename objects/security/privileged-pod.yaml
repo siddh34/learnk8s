@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: privileged-pod
+  name: privileged-pod
+spec:
+  containers:
+  - args:
+    - sleep
+    - "36000"
+    image: busybox
+    name: privileged-pod
+    resources: {}
+    securityContext:
+      privileged: true
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
