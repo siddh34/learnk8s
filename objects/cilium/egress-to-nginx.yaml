@@ -1,0 +1,12 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-egress-curl-to-nginx
+spec:
+  endpointSelector:
+    matchLabels:
+      run: curl
+  egress:
+  - toEndpoints:
+    - matchLabels:
+        run: nginx

@@ -1,0 +1,11 @@
+# Make sure you enable gvisor first
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  runtimeClassName: gvisor2
+  containers:
+  - image: nginx
+    name: nginx

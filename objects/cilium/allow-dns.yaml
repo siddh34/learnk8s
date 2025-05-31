@@ -1,0 +1,13 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "allow-dns-kplabs"
+spec:
+  endpointSelector: {}
+  egress:
+  - toPorts:
+    - ports:
+      - port: "53"
+      rules:
+        dns:
+         - matchName: "kplabs.in"

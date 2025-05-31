@@ -1,0 +1,9 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "restrict-egress-to-cluster"
+spec:
+  endpointSelector: {}
+  egress:
+    - toEntities:
+        - "cluster"
