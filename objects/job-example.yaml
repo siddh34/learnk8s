@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ping-job-manifest
+spec:
+  activeDeadlineSeconds: 30
+  template:
+    metadata:
+    spec:
+      containers:
+      - command:
+        - ping
+        - -c
+        - "100"
+        - google.com
+        image: busybox:latest
+        name: ping-job
+      restartPolicy: Never
