@@ -1,0 +1,79 @@
+# namespace.yaml
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev-namespace
+
+# role.yaml
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pod-reader
+  namespace: dev-namespace
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
+
+--- 
+
+# sa.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pod-reader-sa
+  namespace: dev-namespace
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pod-reader-binding
+subjects:
+- kind: ServiceAccount
+  name: pod-reader-sa
+  namespace: dev-namespace
+roleRef:
+  kind: ClusterRole
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
+
+---
+
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mypod-lister
+  namespace: dev-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mypod-lister
+  template:
+    metadata:
+      labels:
+        app: mypod-lister
+    spec:
+      serviceAccountName: pod-reader-sa
+      automountServiceAccountToken: true
+      containers:
+      - name: pod-lister
+        image: curlimages/curl:7.85.0
+        command:
+          - sh
+          - -c
+          - |
+            # wait for SA → token secret to mount
+            sleep 5
+            echo "=== Attempting to list pods via Kubernetes API ==="
+            curl -s --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
+              -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
+              https://kubernetes.default.svc/api/v1/namespaces/default/pods
+            echo "=== Done ==="
+            # keep pod alive so you can inspect logs
+            sleep 3600

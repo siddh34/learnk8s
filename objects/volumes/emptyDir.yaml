@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: emptydir-multicontainer
+spec:
+  volumes:
+    - name: emptydir-multicontainer
+      emptyDir: {}
+
+  containers:
+    - name: busybox-1
+      image: busybox:latest
+      command: ["sleep", "36000"]
+      volumeMounts:
+        - name: emptydir-multicontainer
+          mountPath: /store
+    - name: busybox-2
+      image: busybox:latest
+      command: ["sleep", "36000"]
+      volumeMounts:
+        - name: emptydir-multicontainer
+          mountPath: /store

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kplabs-deployment
+  name: kplabs-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kplabs-deployment
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: kplabs-deployment
+    spec:
+      containers:
+      - image: httpd:latest
+        name: nginx
+        resources: {}
+status: {}

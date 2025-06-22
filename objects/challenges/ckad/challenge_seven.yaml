@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: demo-cronjob
+spec:
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 5
+  startingDeadlineSeconds: 25
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: demo-cronjob
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          terminationGracePeriodSeconds: 25
+          containers:
+          - command: ['sh', '-c', 'echo "Hello from Kubernetes CronJob!"']
+            image: busybox:latest
+            name: demo-cronjob
+            resources: {}
+          restartPolicy: OnFailure
+  schedule: '2 * * * *'
+status: {}

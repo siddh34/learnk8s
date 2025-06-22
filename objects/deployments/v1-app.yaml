@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: v1-app
+  name: v1-app
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: v1-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: v1-app
+        env: payments-app
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+status: {}

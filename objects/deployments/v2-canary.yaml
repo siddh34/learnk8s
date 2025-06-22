@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: v2-app
+  name: v2-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: v2-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: v2-app
+        env: payments-app
+    spec:
+      containers:
+      - image: httpd
+        name: httpd
+        resources: {}
+status: {}

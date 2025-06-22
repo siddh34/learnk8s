@@ -1,0 +1,61 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kplabs
+spec: {}
+status: {}
+
+---
+
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: kplabs-limit-range
+  namespace: kplabs
+spec:
+  limits:
+  - defaultRequest:
+      cpu: 25m
+    max:
+      memory: 500Mi
+    type: Container
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: half--mem-pod
+  name: half--mem-pod
+  namespace: kplabs
+spec:
+  containers:
+  - image: nginx
+    name: half--mem-pod
+    resources:
+      limits:
+        memory: 250Mi
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nodeport-service
+  name: nodeport-service
+  namespace: kplabs
+spec:
+  ports:
+  - name: 80-80
+    port: 80
+    protocol: TCP
+    targetPort: 80
+    nodePort: 32000
+  selector:
+    run: half--mem-pod
+  type: NodePort
